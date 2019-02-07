@@ -33,49 +33,67 @@ def movement():
     if key[pygame.K_LEFT] and character.x > character.vel:
         character.x -= character.vel
         character.left = True
+        character.last = "left"
     else:
         character.left = False
     if key[pygame.K_RIGHT] and character.x < window[0] - character.vel - character.width:
         character.x += character.vel
         character.right = True
+        character.last = "right"
     else:
         character.right = False
     if key[pygame.K_UP] and character.y > character.vel:
         character.y -= character.vel
         character.up = True
+        character.last = "up"
     else:
         character.up = False
     if key[pygame.K_DOWN]and character.y < window[1] - character.vel - character.height:
         character.y += character.vel
         character.down = True
+        character.last = "down"
     else:
         character.down = False
+
     if key[pygame.K_SPACE]:
-        if character.left or character.up:
-            facing = -1
+        if character.left:
+            dirx = -1
+        elif character.right:
+            dirx = 1
         else:
-            facing = 1
-        if len(projectiles) < 5:
-            projectiles.append(cl.projectile(round(character.x + character.width//2), round(character.y + character.height//2), 2, (0,0,0), facing))
+            dirx = 0
+
+        if character.up:
+            diry = -1
+        elif character.down:
+            diry = 1
+        else:
+            diry = 0
+
+        if dirx == 0 and diry == 0:
+            if character.last == "right":
+                dirx = 1
+            if character.last == "left":
+                dirx = -1
+            if character.last == "down":
+                diry = 1
+            if character.last == "up":
+                diry = -1
+        if len(projectiles) < 1000:
+            projectiles.append(cl.projectile(round(character.x + character.width//2), round(character.y + character.height//2), 2, (0,0,0), dirx, diry))
     return
 
 
 run = True
 while run:
-    clock.tick(120)
+    clock.tick(60)
     #pygame.time.delay(50)
     print(projectiles)
     for proj in projectiles:
         if proj.x < window[0] and proj.x > 0 \
         and proj.y < window[1] and proj.y > 0:
-            if character.right:
-                proj.x += proj.vel
-            if character.left:
-                proj.x -= proj.vel
-            if character.up:
-                proj.y -= proj.vel
-            if character.down:
-                proj.y += proj.vel
+            proj.x += proj.velx
+            proj.y += proj.vely
         else:
             projectiles.pop(projectiles.index(proj))
 

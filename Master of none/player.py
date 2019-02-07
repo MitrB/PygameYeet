@@ -7,7 +7,7 @@ class player(object):
         self.y = y
         self.width = width
         self.height = height
-        self.vel = 1
+        self.vel = 4
 
         self.up = False
         self.right = False
@@ -18,9 +18,4 @@ class player(object):
     def draw(self, win):
         win.blit(guy, (self.x, self.y))
 
-    def movementtrack(self, direction):
-        for i in [self.up, self.right, self.down, self.left]:
-            if direction != i:
-                i = False
-            else:
-                i = True   
+     
