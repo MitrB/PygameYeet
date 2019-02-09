@@ -11,7 +11,8 @@ window = (800, 800)
 win = pygame.display.set_mode(window)
 pygame.display.set_caption("Yeet sanctuary")
 fontsise = 500
-font = pygame.font.SysFont("comicsans", fontsise, True)
+font_score = pygame.font.SysFont("comicsans", fontsise, True)
+font_highscore = pygame.font.SysFont("comicsans", 40, True)
 
 # general pygame preload
 guy = pygame.image.load("Guy.png")
@@ -30,8 +31,10 @@ spawn_coord_enemy = [(n,0) for n in range(0, window[0] + 1)] +  [(0,z) for z in 
 def redraw():
 
     win.fill((0,100,100))
-    text = font.render(str(character.score), 1, (50, 50, 50))
-    win.blit(text, (window[0]//2 - text.get_rect().width//2, window[1]//2 - text.get_rect().height//2))
+    score = font_score.render(str(character.score), 1, (50, 50, 50))
+    highscore = font_highscore.render("Highscore: " + str(character.highscore), 1, (50, 50, 50))
+    win.blit(highscore, (10, window[1] - 30))
+    win.blit(score, (window[0]//2 - score.get_rect().width//2, window[1]//2 - score.get_rect().height//2))
     character.draw(win, guy)
     for p in projectiles:
         p.draw(win)
@@ -136,6 +139,9 @@ while run:
                 if proj in projectiles:
                     projectiles.pop(projectiles.index(proj))
                 character.score += 1
+                # Highscore
+                if character.score > character.highscore:
+                    character.highscore = character.score
 
     # updating projectiles
     for proj in projectiles:

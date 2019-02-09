@@ -19,6 +19,7 @@ class player(object):
         self.enemy_cd = 0
         #self.health = 5
         self.score = 0
+        self.highscore = 0
 
     def draw(self, win, char):
         win.blit(char, (self.x, self.y))
