@@ -14,3 +14,12 @@ class projectile(object):
     def draw(self, win):
         pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
 
+class enemy(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 20
+        self.height = 40
+        self.vel = 3
+    def draw(self, win):
+        pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height), 0)

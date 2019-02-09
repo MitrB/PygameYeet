@@ -14,6 +14,8 @@ class player(object):
         self.down = False
         self.left = False
         self.last = "right"
+        self.shoot_cooldown = 0
+        self.enemy_cd = 0
 
     def draw(self, win):
         win.blit(guy, (self.x, self.y))
