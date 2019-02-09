@@ -10,11 +10,16 @@ pygame.init()
 window = (800, 800)
 win = pygame.display.set_mode(window)
 pygame.display.set_caption("Yeet sanctuary")
+fontsise = 500
+font = pygame.font.SysFont("comicsans", fontsise, True)
+
 # general pygame preload
 guy = pygame.image.load("Guy.png")
+robot = pygame.image.load("hitter.png")
 clock = pygame.time.Clock()
-# the player character:
-character = pl.player(50,50, 64, 64)
+
+# sprites init:
+character = pl.player(window[0]//2 - 32, window[1]//2 - 32)
 projectiles = []
 enemies = []
 spawn_coord_enemy = [(n,0) for n in range(0, window[0] + 1)] +  [(0,z) for z in range(0, window[1] + 1)] \
@@ -25,11 +30,13 @@ spawn_coord_enemy = [(n,0) for n in range(0, window[0] + 1)] +  [(0,z) for z in 
 def redraw():
 
     win.fill((0,100,100))
-    win.blit(guy, (character.x, character.y))
+    text = font.render(str(character.score), 1, (50, 50, 50))
+    win.blit(text, (window[0]//2 - text.get_rect().width//2, window[1]//2 - text.get_rect().height//2))
+    character.draw(win, guy)
     for p in projectiles:
         p.draw(win)
     for e in enemies:
-        e.draw(win)
+        e.draw(win, robot)
     pygame.display.update()
     
 # Interpreting key-presses
@@ -37,7 +44,7 @@ def actions():
     # Updating the cooldown of the shoot-mechanism
     if character.shoot_cooldown > 0:
         character.shoot_cooldown += 1
-    if character.shoot_cooldown == 20:
+    if character.shoot_cooldown == 15:
         character.shoot_cooldown = 0
 
     key = pygame.key.get_pressed()
@@ -94,8 +101,10 @@ def actions():
             if character.last == "up":
                 diry = -1
         if len(projectiles) < 10:
-            projectiles.append(cl.projectile(round(character.x + character.width//2), round(character.y + character.height//2), 2, (0,0,0), dirx, diry))
-            character.shoot_cooldown = 1
+            projectiles.append(cl.projectile(round(character.x + character.width//2), \
+            round(character.y + character.height//2), 2, (0,0,0), dirx, diry))
+
+            character.shoot_cooldown = 1 
     
     return
 
@@ -110,19 +119,23 @@ def enemyspawn():
         rand_cord = rnd.choice(spawn_coord_enemy)
         enemies.append(cl.enemy(rand_cord[0], rand_cord[1]))
 
-        character.enemy_cd += 1
+        character.enemy_cd = 1
 
 # main game loop
 run = True
 while run:
     clock.tick(60)
+
+    # enemy hit
     for proj in projectiles:
         for enem in enemies:
-            if abs(enem.x + enem.width//2 - proj.x ) < 10 and abs(enem.y + enem.height//2 - proj.y ) < 10:
+            if abs(enem.x + enem.width//2 - proj.x ) < 10 \
+            and abs(enem.y + enem.height//2 - proj.y ) < 10:
                 if enem in enemies:
                     enemies.pop(enemies.index(enem))
                 if proj in projectiles:
                     projectiles.pop(projectiles.index(proj))
+                character.score += 1
 
     # updating projectiles
     for proj in projectiles:
@@ -146,9 +159,11 @@ while run:
             enem.y -= enem.vel
 
         # character hit
-        if abs(character.x + 20 - enem.x) < 10 and abs(character.y + 20 - enem.y) < 10:
+        if abs(character.x + 20 - enem.x) < 10 \
+        and abs(character.y + 20 - enem.y) < 10:
             print("ding")
             enemies.pop(enemies.index(enem))
+            character.score = 0
 
     # Quit game
     for event in pygame.event.get():

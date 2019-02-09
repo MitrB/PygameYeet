@@ -21,5 +21,6 @@ class enemy(object):
         self.width = 20
         self.height = 40
         self.vel = 3
-    def draw(self, win):
-        pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height), 0)
+        
+    def draw(self, win, char):
+        win.blit(char, (self.x - 10, self.y - 10))
