@@ -12,7 +12,7 @@ class projectile(object):
         self.vely = 10 * diry
 
     def draw(self, win):
-        pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
+        pygame.draw.circle(win, self.color, (int(self.x),int(self.y)), self.radius)
 
 class enemy(object):
     def __init__(self, x, y):

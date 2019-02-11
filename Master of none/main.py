@@ -1,5 +1,4 @@
 import pygame
-#import robot
 import player as pl
 import classes as cl
 import random as rnd
