@@ -17,7 +17,11 @@ font_highscore = pygame.font.SysFont("comicsans", 40, True)
 guy = pygame.image.load("Guy.png")
 robot = pygame.image.load("hitter.png")
 clock = pygame.time.Clock()
-
+fps = 60
+proj_max = 10
+enem_max = 5
+proj_cld = 15
+enem_cld = 40
 # sprites init:
 character = pl.player(window[0]//2 - 32, window[1]//2 - 32)
 projectiles = []
@@ -46,7 +50,7 @@ def actions():
     # Updating the cooldown of the shoot-mechanism
     if character.shoot_cooldown > 0:
         character.shoot_cooldown += 1
-    if character.shoot_cooldown == 15:
+    if character.shoot_cooldown == proj_cld:
         character.shoot_cooldown = 0
 
     key = pygame.key.get_pressed()
@@ -102,9 +106,9 @@ def actions():
                 diry = 1
             if character.last == "up":
                 diry = -1
-        if len(projectiles) < 10:
+        if len(projectiles) < proj_max:
             projectiles.append(cl.projectile(round(character.x + character.width//2), \
-            round(character.y + character.height//2), 2, (0,0,0), dirx, diry))
+            round(character.y + character.height//2), 4, (255,100,255), dirx, diry))
 
             character.shoot_cooldown = 1 
     
@@ -114,10 +118,10 @@ def enemyspawn():
     # enemy spawn cooldown
     if character.enemy_cd > 0:
         character.enemy_cd += 1
-    if character.enemy_cd == 40:
+    if character.enemy_cd == enem_cld:
         character.enemy_cd = 0
 
-    if character.enemy_cd == 0 and len(enemies) < 5 :
+    if character.enemy_cd == 0 and len(enemies) < enem_max :
         rand_cord = rnd.choice(spawn_coord_enemy)
         enemies.append(cl.enemy(rand_cord[0], rand_cord[1]))
 
@@ -126,7 +130,7 @@ def enemyspawn():
 # main game loop
 run = True
 while run:
-    clock.tick(60)
+    clock.tick(fps)
 
     # enemy hit
     for proj in projectiles:
