@@ -18,7 +18,9 @@ font_highscore = pygame.font.SysFont("comicsans", 40, True)
 guy = pygame.image.load("Guy.png")
 robot = pygame.image.load("hitter.png")
 clock = pygame.time.Clock()
-
+pygame.mixer.music.load('mypixelsaredead.mp3')
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.04)
 # sprites init:
 character = pl.player(window[0]//2 - 32, window[1]//2 - 32)
 projectiles = []
@@ -30,7 +32,7 @@ spawn_coord_enemy = [(n,0) for n in range(0, window[0] + 1)] +  [(0,z) for z in 
 # from back to front
 def redraw():
 
-    win.fill((0,100,100))
+    win.fill((0,120,120))
     score = font_score.render(str(character.score), 1, (50, 50, 50))
     highscore = font_highscore.render("Highscore: " + str(character.highscore), 1, (50, 50, 50))
     win.blit(highscore, (10, window[1] - 30))
