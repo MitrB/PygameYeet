@@ -47,7 +47,7 @@ class robot(object):
     def energy(self):
         return self.energy
     def attack(self):
-        return self.attack
+        return self.attackb
     def defence(self):
         return self.defence
     def sprite(self):
