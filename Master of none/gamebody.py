@@ -5,8 +5,19 @@ import random as rnd
 
 pygame.init()
 
+#Difficulty select [((windowx, windowy), fps, proj_max, enem_max, proj_cld, enem_cld), ...]
+levels = 	[((1000, 1000), 60, 10, 5, 15, 40, (136,50,99)), \
+			 ((800, 800), 60, 10, 5, 15, 40, (0,100,100)), \
+			 ((800, 400), 60, 10, 5, 15, 40, (200,0,50)) ]
+lvl = 0
+window = (levels[lvl][0][0], levels[lvl][0][1])
+fps = levels[lvl][1]
+proj_max = levels[lvl][2]
+enem_max = levels[lvl][3]
+proj_cld = levels[lvl][4]
+enem_cld = levels[lvl][5]
+win_color = levels[lvl][6]
 #game window
-window = (800, 800)
 win = pygame.display.set_mode(window)
 pygame.display.set_caption("Yeet sanctuary")
 fontsise = 500
@@ -17,11 +28,7 @@ font_highscore = pygame.font.SysFont("comicsans", 40, True)
 guy = pygame.image.load("Guy.png")
 robot = pygame.image.load("hitter.png")
 clock = pygame.time.Clock()
-fps = 60
-proj_max = 10
-enem_max = 5
-proj_cld = 15
-enem_cld = 40
+
 # sprites init:
 character = pl.player(window[0]//2 - 32, window[1]//2 - 32)
 projectiles = []
@@ -33,7 +40,7 @@ spawn_coord_enemy = [(n,0) for n in range(0, window[0] + 1)] +  [(0,z) for z in 
 # from back to front
 def redraw():
 
-    win.fill((0,100,100))
+    win.fill(win_color)
     score = font_score.render(str(character.score), 1, (50, 50, 50))
     highscore = font_highscore.render("Highscore: " + str(character.highscore), 1, (50, 50, 50))
     win.blit(highscore, (10, window[1] - 30))
